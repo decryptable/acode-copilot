@@ -1,11 +1,14 @@
 
 <div align="center">
-<h1>Acode Copilot</h1>
+
+<img src="https://raw.githubusercontent.com/decryptable/acode-copilot/refs/heads/main/icon.png" width="150"/>
+
+<h2 style="font-size: 40px;">Acode Copilot</h2>
 
 <code>AI code completion for ACode.</code>
 
   <a href="https://github.com/decryptable/acode-copilot">
-    <img src="https://img.shields.io/badge/version-1.0.0-blue.svg?style=flat-square" />
+    <img src="https://img.shields.io/badge/version-1.0.0-blue.svg?style=flat-square" /> <!-- Don't change this version -->
   </a>
   <a href="https://github.com/decryptable/acode-copilot/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" />
