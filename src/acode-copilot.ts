@@ -137,17 +137,26 @@ class Copilot {
   }
 
   private acceptSuggestion() {
-    if (this.lastSuggestion.length > 0) {
-      const currentCode = this.editor.getValue();
-      const newCode = currentCode + this.lastSuggestion;
+  if (this.lastSuggestion.length > 0) {
+    const currentCode = this.editor.getValue();
+    const newCode = currentCode + this.lastSuggestion;
 
-      this.editor.setValue(newCode, 1);
-      this.clearSuggestion();
-      this.lastSuggestion = "";
-    } else {
-      toast("No suggestion available to accept", 1000);
-    }
+    // Save cursor position before setting value
+    const cursorPosition = this.editor.getCursorPosition();
+
+    this.editor.setValue(newCode, -1); // Use -1 to preserve history & undo stack
+
+    // Restore cursor position
+    this.editor.moveCursorToPosition(cursorPosition);
+    this.editor.focus();
+
+    this.clearSuggestion();
+    this.lastSuggestion = "";
+  } else {
+    toast("No suggestion available to accept", 1000);
   }
+}
+
 }
 
 export { Copilot };
