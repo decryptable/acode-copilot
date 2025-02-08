@@ -1,0 +1,60 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - "*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Build and Upload Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Create .env file
+        run: |
+          cp .env.example .env
+          echo "COPILOT_API_ENDPOINT=${{ secrets.COPILOT_API_ENDPOINT || '' }}" >> .env
+
+      - name: Extract version from tag
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Update version in plugin.json
+        run: |
+          jq '.version = "${{ env.VERSION }}"' plugin.json > tmp.json && mv tmp.json plugin.json
+
+      - name: Update version in README.md
+        run: |
+            sed -i "s/1\.0\.0/${{ env.VERSION }}/g" README.md
+  
+      - name: Build project
+        run: yarn build
+
+      - name: Rename build artifact
+        run: |
+          version="${GITHUB_REF#refs/tags/}"
+          mv dist.zip acode-copilot-v$version.zip
+
+      - name: Upload artifact to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: acode-copilot-v${{ github.ref_name }}.zip
+          asset_name: acode-copilot-v${{ github.ref_name }}.zip
+          tag: ${{ github.ref }}
+          overwrite: true
