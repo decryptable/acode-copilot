@@ -6,7 +6,7 @@ const alert = acode.require("alert");
 
 declare global {
   interface Window {
-    Copilot: any;
+    Copilot: Copilot;
   }
 }
 
@@ -48,35 +48,26 @@ class AcodePlugin {
         this.initialized = true;
 
         observer.disconnect();
-        try {
-          new Copilot(editor, page).start();
-        } catch (error) {
-          alert(plugin.name, `⚠️ <pre>${(error as Error).message + "\n" + (error as Error).stack}</pre>`);
-        }
+        new Copilot(editor, page).start();
       }
     }
   }
-
-  async destroy() {}
 }
 
-if (window.acode) {
-  const acodePlugin = new AcodePlugin();
-  acode.setPluginInit(
-    plugin.id,
-    async (
-      baseUrl: string,
-      $page: WCPage,
-      { cacheFileUrl, cacheFile }: { cacheFileUrl: string; cacheFile: string }
-    ) => {
-      try {
+try {
+  if (window.acode) {
+    const acodePlugin = new AcodePlugin();
+    acode.setPluginInit(
+      plugin.id,
+      async (
+        baseUrl: string,
+        $page: WCPage,
+        { cacheFileUrl, cacheFile }: { cacheFileUrl: string; cacheFile: string }
+      ) => {
         await acodePlugin.init();
-      } catch (error) {
-        toast((error as Error).message);
       }
-    }
-  );
-  acode.setPluginUnmount(plugin.id, () => {
-    acodePlugin.destroy();
-  });
+    );
+  }
+} catch (error) {
+  console.error(error)
 }

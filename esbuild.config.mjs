@@ -1,6 +1,5 @@
 import * as esbuild from "esbuild";
 import { exec } from "child_process";
-import { dotenvRun } from "@dotenv-run/esbuild";
 
 const isServe = process.argv.includes("--serve");
 
@@ -34,11 +33,6 @@ let buildConfig = {
   color: true,
   outdir: "dist",
   plugins: [
-    dotenvRun({
-      verbose: true,
-      root: "../../",
-      prefix: "^COPILOT",
-    }),
     zipPlugin,
   ],
 };
