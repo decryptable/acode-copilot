@@ -1,4 +1,10 @@
 
+
+> [!CAUTION]
+> I no longer maintain this plugin and will not develop it in the future.
+
+---
+
 <div align="center">
 
 <img src="https://raw.githubusercontent.com/decryptable/acode-copilot/refs/heads/main/icon.png" width="150"/>
@@ -24,9 +30,6 @@
 </p>
 
 ## Usage
-
-> [!IMPORTANT]
-> This plugin is still in beta.
 
 Just install the plugin in ACode, enable it in the settings, and start coding! The AI-powered autocompletion will suggest relevant code snippets.
 
